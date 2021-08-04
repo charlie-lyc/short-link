@@ -11,6 +11,9 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'))
 
+(async () => {
+    await sequelize.sync()
+})()
 
 app.get('/', async (req, res) => {
     // try {
