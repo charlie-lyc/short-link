@@ -35,4 +35,9 @@ const Link = sequelize.define('Link', {
     }
 )
 
+
+(async () => {
+  await sequelize.sync()
+})()
+
 module.exports = { Link }

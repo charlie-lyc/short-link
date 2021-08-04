@@ -1,7 +1,6 @@
 // console.log('hello')
 const express = require('express')
 const cors = require('cors')
-const sequelize = require('./dbConnect')
 const { Link } = require('./models')
 
 
@@ -13,6 +12,8 @@ app.use(express.static('public'))
 
 
 app.get('/', async (req, res) => {
+    res.send('welcome')
+
     // try {
     //     await sequelize.authenticate();
     //     console.log('Connection has been established successfully.');
@@ -20,13 +21,6 @@ app.get('/', async (req, res) => {
     //     console.error('Unable to connect to the database:', error);
     // }
     // console.log(Link === sequelize.models.Link)
-
-    try {
-        await sequelize.sync()
-        res.send('welcome')
-    } catch (error) {
-        console.log(error)
-    }
 })
 
 app.get('/short-links', async (req, res) => {
