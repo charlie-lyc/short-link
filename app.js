@@ -20,86 +20,120 @@ app.get('/', async (req, res) => {
     //     console.error('Unable to connect to the database:', error);
     // }
     // console.log(Link === sequelize.models.Link)
-    await sequelize.sync()
 
-    res.send('welcome')
+    try {
+        await sequelize.sync()
+        res.send('welcome')
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 app.get('/short-links', async (req, res) => {
-    let links
-    if (req.query.size && req.query.page) {
-        const size = Number.parseInt(req.query.size)
-        const page = Number.parseInt(req.query.page)
-        links = await Link.findAll({ offset: size * (page - 1), limit: size })
+    try {
+        let links
+        if (req.query.size && req.query.page) {
+            const size = Number.parseInt(req.query.size)
+            const page = Number.parseInt(req.query.page)
+            links = await Link.findAll({ offset: size * (page - 1), limit: size })
+            res.status(200).json({ data: links })
+        }
+        links = await Link.findAll()
         res.status(200).json({ data: links })
+    } catch (error) {
+        console.log(error)
     }
-    links = await Link.findAll()
-    res.status(200).json({ data: links })
 })
 
 app.get('/short-links/:shortId', async (req, res) => {
-    const links = await Link.findAll({
-        where: {
-            shortId: req.params.shortId
-        }
-    })
-    res.status(200).json({ data: links[0] })
+    try {
+        const links = await Link.findAll({
+            where: {
+                shortId: req.params.shortId
+            }
+        })
+        res.status(200).json({ data: links[0] })
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 app.get('/r/:shortId', async (req, res) => {
-    const links = await Link.findAll({
-        where: {
-            shortId: req.params.shortId
-        }
-    })
-    res.status(302).redirect(links[0].url)
+    try {
+        const links = await Link.findAll({
+            where: {
+                shortId: req.params.shortId
+            }
+        })
+        res.status(302).redirect(links[0].url)
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 app.get('/a/:aliasName', async (req, res) => {
-    const links = await Link.findAll({
-        where: {
-            aliasName: req.params.aliasName
-        }
-    })
-    res.status(302).redirect(links[0].url)
+    try {
+        const links = await Link.findAll({
+            where: {
+                aliasName: req.params.aliasName
+            }
+        })
+        res.status(302).redirect(links[0].url)
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 app.post('/short-links', async (req, res) => {
-    let shortId = ''
-    while (shortId.length < 5) {
-        const numOrChar = Math.floor(Math.random() * 2)
-        if (numOrChar === 0) {
-            const randomNum = Math.floor(Math.random() * 10).toString()
-            shortId += randomNum
-        } else {
-            const randomChar = String.fromCharCode(Math.floor(Math.random() * (122 - 97) + 97 + 1))
-            shortId += randomChar
+    try {
+        let shortId = ''
+        while (shortId.length < 5) {
+            const numOrChar = Math.floor(Math.random() * 2)
+            if (numOrChar === 0) {
+                const randomNum = Math.floor(Math.random() * 10).toString()
+                shortId += randomNum
+            } else {
+                const randomChar = String.fromCharCode(Math.floor(Math.random() * (122 - 97) + 97 + 1))
+                shortId += randomChar
+            }
         }
+        const newLink = await Link.create({
+            shortId,
+            url: req.body.url
+        })
+        await newLink.save()
+        res.status(201).json({ data: newLink })
+    } catch (error) {
+        console.log(error)
     }
-    const newLink = await Link.create({
-        shortId,
-        url: req.body.url
-    })
-    await newLink.save()
-    res.status(201).json({ data: newLink })
+
 })
 
 app.patch('/short-links/:shortId', async (req, res) => {
-    await Link.update({ aliasName: req.body.aliasName }, {
-        where: {
-            shortId: req.params.shortId
-        }       
-    })
-    res.status(200).json({ msg: 'Alias name added' })
+    try {
+        await Link.update({ aliasName: req.body.aliasName }, {
+            where: {
+                shortId: req.params.shortId
+            }       
+        })
+        res.status(200).json({ msg: 'Alias name added' })
+    } catch (error) {
+        console.log(error)
+    }
+
 })
 
 app.delete('/short-links/:shortId', async (req, res) => {
-    await Link.destroy({
-        where: {
-            shortId: req.params.shortId
-        }
-    })
-    res.status(200).json({ msg: 'Link deleted' })
+    try {
+        await Link.destroy({
+            where: {
+                shortId: req.params.shortId
+            }
+        })
+        res.status(200).json({ msg: 'Link deleted' })
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 
