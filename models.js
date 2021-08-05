@@ -38,6 +38,6 @@ const Link = sequelize.define('Link', {
 
 
 /*** 최초 한번만 실행 ***/
-sequelize.sync({ force: true }).then(() => console.log('Successfully sync all models!')).catch(err => console.log(err))
+// sequelize.sync({ force: true }).then(() => console.log('Successfully sync all models!')).catch(err => console.log(err))
 
 module.exports = { Link }

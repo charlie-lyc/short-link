@@ -1,1 +1,5 @@
-node_nodules
+/*** 설치할 때는 제외 ***/
+dbConnect.js
+
+node_nodules/
+.vscode
