@@ -1,15 +1,15 @@
 // console.log('hello')
 const express = require('express')
 const cors = require('cors')
+
 const { Link } = require('./models')
 const sequelize = require('./dbConnect')
-
 const app = express()
+
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'))
-
 
 app.get('/', async (req, res) => {
     // res.send('hello')
