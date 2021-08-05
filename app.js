@@ -2,7 +2,7 @@
 const express = require('express')
 const cors = require('cors')
 const { Link } = require('./models')
-const path = require('path')
+const sequelize = require('./dbConnect')
 
 const app = express()
 app.use(cors())
@@ -11,9 +11,21 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'))
 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     // res.send('hello')
-    res.sendFile(path.resolve(__dirname, 'public', 'index.html'))
+    // try {
+    //     await sequelize.authenticate();
+    //     console.log('Connection has been established successfully.');
+    // } catch (error) {
+    //     console.error('Unable to connect to the database:', error);
+    // }
+    // console.log(Link === sequelize.models.Link)
+    try {
+        await sequelize.sync({ force: true })
+        res.send('hello')
+    } catch (error) {
+        console.log(error);
+    }
 })
 
 app.get('/short-links', async (req, res) => {
