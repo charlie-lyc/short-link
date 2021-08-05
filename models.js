@@ -1,6 +1,7 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('./dbConnect')
 
+
 const Link = sequelize.define('Link', {
         shortId: {
             type: DataTypes.STRING,
@@ -35,5 +36,8 @@ const Link = sequelize.define('Link', {
     }
 )
 
-// sequelize.sync().then(() => console.log('Successfully sync all models!')).catch(err => console.log(err))
+
+// 최초 한번만 실행
+sequelize.sync({ true: force }).then(() => console.log('Successfully sync all models!')).catch(err => console.log(err))
+
 module.exports = { Link }

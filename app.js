@@ -11,6 +11,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static('public'))
 
+
 app.get('/', async (req, res) => {
     // res.send('hello')
     // try {
@@ -20,12 +21,7 @@ app.get('/', async (req, res) => {
     //     console.error('Unable to connect to the database:', error);
     // }
     // console.log(Link === sequelize.models.Link)
-    try {
-        await sequelize.sync({ force: true })
-        res.send('hello')
-    } catch (error) {
-        console.log(error);
-    }
+    res.status(200).json({ msg: 'hello' })
 })
 
 app.get('/short-links', async (req, res) => {
