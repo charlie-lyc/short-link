@@ -1,4 +1,4 @@
-# short-links
+# short-links Toy Project
 ### BE : Express
 ### DB : MySQL
 ### FE : React
