@@ -35,5 +35,5 @@ const Link = sequelize.define('Link', {
     }
 )
 
-sequelize.sync().then(() => clg('Successfully sync all models!')).catch(err => console.log(err))
+sequelize.sync().then(() => console.log('Successfully sync all models!')).catch(err => console.log(err))
 module.exports = { Link }
